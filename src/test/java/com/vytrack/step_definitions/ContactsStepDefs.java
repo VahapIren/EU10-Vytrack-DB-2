@@ -72,6 +72,7 @@ public class ContactsStepDefs {
         //we have ready method to find email webelement in pom class
         //we just get the email from feature file and pass to that method and click it
         ContactsPage contactsPage = new ContactsPage();
+        BrowserUtils.waitFor(1);
         contactsPage.getContactEmail(email).click();
 
     }
@@ -89,13 +90,12 @@ public class ContactsStepDefs {
 
 
     //get information from database
-        String query= "select concat(first_name,' ',last_name) \"full_name\", e.email \n" +
-                "from orocrm_contact c inner join orocrm_contact_email e \n" +
-                "on c.id = e.owner_id \n" +
-                "where e.email = 'mrjakc@mail.ru'";
+        String query= "select concat(first_name,' ',last_name) as \"full_name\",e.email\n" +
+                "from orocrm_contact c inner join orocrm_contact_email e\n" +
+                "on c.id = e.owner_id where e.email='cherrylarmstrong@yahoo.com'";
 
         //create the connection to qa3 env
-       // DBUtils.createConnection();
+        //DBUtils.createConnection();
         //get the data in java collections
         Map<String, Object> rowMap = DBUtils.getRowMap(query);
         String expectedFullname = (String) rowMap.get("full_name");
@@ -104,11 +104,19 @@ public class ContactsStepDefs {
         System.out.println("expectedFullname = " + expectedFullname);
         System.out.println("expectedEmail = " + expectedEmail);
         //close connection
-       // DBUtils.destroy();
+        //DBUtils.destroy();
 
         //assertion, compare UI vs DATABASE information
         Assert.assertEquals(expectedFullname,actualFullname);
         Assert.assertEquals(expectedEmail,actualEmail);
+/*
+        String query= "select concat(first_name,' ',last_name) \"full_name\", e.email \n" +
+                "from orocrm_contact c inner join orocrm_contact_email e \n" +
+                "on c.id = e.owner_id";
+        List<Map<String,Object>> list=DBUtils.getQueryResultMap(query);
+        System.out.println(list);
+
+ */
 
     }
 
@@ -145,6 +153,7 @@ public class ContactsStepDefs {
         //assertion, compare UI vs DATABASE information
         Assert.assertEquals(expectedFullname,actualFullname);
         Assert.assertEquals(expectedEmail,actualEmail);
+
     }
 
 
